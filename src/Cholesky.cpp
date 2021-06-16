@@ -19,7 +19,7 @@ Matrix Cholesky::decompose(const Matrix &A)
                 sum += diag ? pow(L(jj, kk), 2) : ( L(ii, kk) * L(jj, kk) );
             }
             diff = A(ii, jj) - sum;
-            L(ii, jj) = diag ? sqrt(diff) : ( diff / L(jj, jj) );
+            L(ii, jj) = diag ? sqrt(diff) : L(jj, jj) != 0 ? ( diff / L(jj, jj) ) : 0;
         }
     }
     return L;
@@ -61,14 +61,14 @@ Matrix Cholesky::solve(Matrix &A, Matrix &b)
     }
 
     // Backward substitution
-    x(L.rows()-1, 0) = b(b.rows()-1, 0);
-    for (int ii = L.rows()-2; ii > -1; ii--)
+    x(-1, 0) = b(-1, 0) / LT(-1, -1);
+    for (int ii = LT.rows()-2; ii > -1; ii--)
     {
-        for (int jj = ii+1; jj < L.rows(); jj++)
+        for (int jj = ii+1; jj < LT.rows(); jj++)
         {
-            x(ii, 0) += L(ii, jj) * x(jj, 0);
+            x(ii, 0) += LT(ii, jj) * x(jj, 0);
         }
-        x(ii, 0) = (b(ii, 0) - x(ii, 0)) / L(ii, ii);
+        x(ii, 0) = (b(ii, 0) - x(ii, 0)) / LT(ii, ii);
     }
 
     return x;

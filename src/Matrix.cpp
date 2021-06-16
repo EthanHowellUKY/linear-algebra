@@ -59,9 +59,20 @@ Matrix::Matrix(int rows, int cols)
     m_rows = rows;
     m_cols = cols;
     m_matrix.resize(m_rows);
-    for (int ii = 0; ii < cols; ii++)
+    for (int ii = 0; ii < rows; ii++)
     {
         m_matrix[ii].resize(m_cols, 0);
+    }
+}
+
+Matrix::Matrix(const std::vector<double> &mat)
+{
+    m_rows = mat.size();
+    m_cols = 1;
+    m_matrix.resize(m_rows);
+    for (int ii=0; ii<m_rows; ii++)
+    {
+        m_matrix[ii].push_back(mat[ii]);
     }
 }
 
@@ -128,6 +139,8 @@ Matrix Matrix::operator*(Matrix &rhs)
 
 std::vector<double> Matrix::operator*(std::vector<double> &rhs)
 {
+    return (*this) * rhs;
+    /*
     std::vector<double> result;
     if (m_rows != rhs.size())
     {
@@ -146,10 +159,11 @@ std::vector<double> Matrix::operator*(std::vector<double> &rhs)
         result[ii] = value;
     }
     return result;
+    */
 }
 
-double &Matrix::operator()(const int &row, const int &col) { return m_matrix[row][col]; }
-double Matrix::operator()(const int &row, const int &col) const { return m_matrix[row][col]; }
+double &Matrix::operator()(const int &row, const int &col) { return m_matrix[row == -1 ? m_rows-1 : row][col == -1 ? m_cols-1 : col]; }
+double Matrix::operator()(const int &row, const int &col) const { return m_matrix[row == -1 ? m_rows-1 : row][col == -1 ? m_cols-1 : col]; }
 
 bool Matrix::operator==(const Matrix &rhs) const
 {
@@ -193,6 +207,8 @@ bool Matrix::operator==(const std::vector<std::vector<double>> &rhs) const
 // -------------------------------- //
 //         PUBLIC FUNCTIONS         //
 // -------------------------------- //
+bool Matrix::is_square() const { return m_rows == m_cols; }
+
 Matrix Matrix::transpose()
 {
     Matrix T_(m_cols, m_rows);
@@ -219,9 +235,23 @@ void Matrix::print()
         std::cout << "]" << '\n';
     }
 }
+double Matrix::trace()
+{
+    double result = 0.0;
+    if (is_square())
+    {
+        for (int ii = 0; ii<m_rows; ii++)
+        {
+            result += m_matrix[ii][ii];
+        }
+    }
+    else
+    {
+        std::cout << "Cannot get trace of a non-square matrix" << '\n';
+    }
 
-//void Matrix::print_solver() { m_solver->print(); }
-//void Matrix::set_solver(const SOLVER &solver) { m_solver = SolverFactory::create(solver); }
+    return result;
+}
 
 double Matrix::norm1(const Matrix &u) { return pnorm(u, 1.0); }
 double Matrix::norm1(const std::vector<double> &u) { return pnorm(u, 1.0); }
@@ -241,6 +271,42 @@ Matrix Matrix::scalar_multiply(double &scalar, Matrix &mat)
     return mat;
 }
 
+double Matrix::dot(const std::vector<double> &x, const std::vector<double> &y)
+{
+    double sum = -1;
+    if (x.size() == y.size())
+    {
+        for (int ii = 0; ii<x.size(); ii++)
+        {
+            sum += ( x[ii] * y[ii] );
+        }
+    }
+    return sum;
+}
+
+double Matrix::scalar_projection(const std::vector<double> &x, const std::vector<double> &y) { return dot(x, y) / norm2(y); }
+
+std::vector<double> Matrix::projection(const std::vector<double> &x, const std::vector<double> &y)
+{
+    std::vector<double> solution;
+    double scalar_val = scalar_projection(x, y) * ( 1 / norm2(y) );
+    for (int ii = 0; ii<y.size(); ii++)
+    {
+        solution.push_back(scalar_val * y[ii]);
+    }
+    return solution;
+}
+
+Matrix Matrix::eye(int rows)
+{
+    Matrix result(rows, rows);
+    for (int ii = 0; ii<rows; ii++)
+    {
+        result(ii, ii) = 1;
+    }
+    return result;
+}
+
 // ------------ GETTERS ----------- //
 int Matrix::rows() const { return m_rows; }
 int Matrix::cols() const { return m_cols; }
@@ -248,3 +314,22 @@ int Matrix::cols() const { return m_cols; }
 // ------------ RELATED ----------- //
 Matrix operator*(Matrix rhs, double lhs) { return Matrix::scalar_multiply(lhs, rhs); }
 Matrix operator*(double lhs, Matrix rhs) { return Matrix::scalar_multiply(lhs, rhs); }
+Matrix operator*(Matrix lhs, Matrix rhs)
+{
+    Matrix result(lhs.rows(), rhs.cols());
+    if (lhs.cols() == rhs.rows())
+    {
+        for (int ii = 0; ii < lhs.rows(); ii++)
+        {
+            for (int jj = 0; jj < lhs.cols(); ii++)
+            {
+                for (int kk = 0; kk < rhs.rows(); kk++)
+                {
+                    result(ii, jj) += lhs(ii, kk) * rhs(kk, jj);
+                }
+            }
+        }
+    }
+
+    return result;
+}

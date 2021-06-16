@@ -6,8 +6,6 @@
 #include <vector>
 #include <math.h>
 
-// #include "Matrix/SolverFactory.h"
-
 class Matrix
 {
 public:
@@ -16,7 +14,7 @@ public:
     // -------------------------------- //
     Matrix() {}
     Matrix(int rows, int cols);
-    Matrix(const std::vector<double> &mat) {}
+    Matrix(const std::vector<double> &mat);
     Matrix(const std::vector<std::vector<double>> &mat);
     Matrix(const char *filename) {}
 
@@ -42,14 +40,16 @@ public:
     bool operator==(const std::vector<std::vector<double>> &rhs) const;
     friend Matrix operator*(Matrix rhs, double lhs);
     friend Matrix operator*(double lhs, Matrix rhs);
+    friend Matrix operator*(Matrix lhs, Matrix rhs);
 
     // -------------------------------- //
     //         PUBLIC FUNCTIONS         //
     // -------------------------------- //
+    bool is_square() const;
     Matrix transpose();
     void print();
-    void print_solver();
-    // void set_solver(const SOLVER &solver);
+    double trace();
+    //void print_solver();
     static double norm1(const Matrix &u);
     static double norm1(const std::vector<double> &u);
     static double norm1(const std::vector<std::vector<double>> &u);
@@ -57,7 +57,11 @@ public:
     static double norm2(const std::vector<double> &u);
     static double norm2(const std::vector<std::vector<double>> &u);
     static Matrix scalar_multiply(double &scalar, Matrix &mat);
-
+    static double dot(const std::vector<double> &x, const std::vector<double> &y);
+    static double scalar_projection(const std::vector<double> &x, const std::vector<double> &y);
+    static std::vector<double> projection(const std::vector<double> &x, const std::vector<double> &y);
+    static Matrix eye(int rows);
+    
     // ------------ GETTERS ----------- //
     int rows() const;
     int cols() const;
@@ -80,7 +84,6 @@ private:
     int m_rows;
     int m_cols;
     std::vector<std::vector<double>> m_matrix;
-    // Solver *m_solver = SolverFactory::create(SOLVER::JACOBI);
 };
 
 #endif // MATRIX_H
