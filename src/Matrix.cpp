@@ -124,7 +124,7 @@ Matrix Matrix::operator*(Matrix &rhs)
     {
         for (int ii = 0; ii < m_rows; ii++)
         {
-            for (int jj = 0; jj < m_cols; ii++)
+            for (int jj = 0; jj < m_cols; jj++)
             {
                 for (int kk = 0; kk < rhs.rows(); kk++)
                 {
@@ -321,7 +321,7 @@ Matrix operator*(Matrix lhs, Matrix rhs)
     {
         for (int ii = 0; ii < lhs.rows(); ii++)
         {
-            for (int jj = 0; jj < lhs.cols(); ii++)
+            for (int jj = 0; jj < lhs.cols(); jj++)
             {
                 for (int kk = 0; kk < rhs.rows(); kk++)
                 {
