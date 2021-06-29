@@ -2,9 +2,11 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
+#define MIN_TOL 0.00001
+
 #include <math.h>
 #include <vector>
-#include "Matrix/Matrix.h"
+#include "LinearAlgebra/Matrix.h"
 
 class Solver
 {

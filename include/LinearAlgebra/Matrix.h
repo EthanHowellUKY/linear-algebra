@@ -12,11 +12,11 @@ public:
     // -------------------------------- //
     //           CONSTRUCTORS           //
     // -------------------------------- //
-    Matrix() {}
-    Matrix(int rows, int cols);
-    Matrix(const std::vector<double> &mat);
-    Matrix(const std::vector<std::vector<double>> &mat);
-    Matrix(const char *filename) {}
+    explicit Matrix() {}
+    explicit Matrix(int rows, int cols);
+    explicit Matrix(const std::vector<double> &mat);
+    explicit Matrix(const std::vector<std::vector<double>> &mat);
+    explicit Matrix(const char *filename) {}
 
     // COPY CONSTRUCTOR
     //Matrix(const Matrix &);
@@ -29,10 +29,11 @@ public:
     // -------------------------------- //
     //            OPERATORS             //
     // -------------------------------- //
-    Matrix operator+(Matrix &rhs);
-    Matrix operator-(Matrix &rhs);
-    Matrix operator*(Matrix &rhs);
+    Matrix operator+(const Matrix &rhs);
+    Matrix operator-(const Matrix &rhs);
+    Matrix operator*(const Matrix &rhs);
     Matrix operator=(const std::vector<std::vector<double>> &rhs);
+    Matrix operator+=(const Matrix &rhs);
     std::vector<double> operator*(std::vector<double> &rhs);
     double &operator()(const int &row, const int &col);
     double operator()(const int &row, const int &col) const;
@@ -40,7 +41,8 @@ public:
     bool operator==(const std::vector<std::vector<double>> &rhs) const;
     friend Matrix operator*(Matrix rhs, double lhs);
     friend Matrix operator*(double lhs, Matrix rhs);
-    friend Matrix operator*(Matrix lhs, Matrix rhs);
+    friend Matrix operator-(const Matrix &lhs, const Matrix &rhs);
+    // friend Matrix operator*(Matrix lhs, Matrix rhs);
 
     // -------------------------------- //
     //         PUBLIC FUNCTIONS         //
@@ -61,7 +63,7 @@ public:
     static double scalar_projection(const std::vector<double> &x, const std::vector<double> &y);
     static std::vector<double> projection(const std::vector<double> &x, const std::vector<double> &y);
     static Matrix eye(int rows);
-    
+        
     // ------------ GETTERS ----------- //
     int rows() const;
     int cols() const;
@@ -73,7 +75,7 @@ private:
     //        PRIVATE FUNCTIONS         //
     // -------------------------------- //
     bool is_valid();
-    void add_sub(Matrix &mat, Matrix &lhs, Matrix &rhs, const int &op);
+    void add_sub(Matrix &mat, Matrix &lhs, const Matrix &rhs, const int &op);
     static double pnorm(const Matrix &u, const int &p);
     static double pnorm(const std::vector<double> &u, const int &p);
     static double pnorm(const std::vector<std::vector<double>> &u, const int &p);

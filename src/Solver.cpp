@@ -1,2 +1,2 @@
 
-#include "Matrix/Solver.h"
+#include "LinearAlgebra/Solver.h"

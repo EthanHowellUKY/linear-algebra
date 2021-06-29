@@ -1,5 +1,5 @@
 
-#include "Matrix/LU.h"
+#include "LinearAlgebra/LU.h"
 
 // -------------------------------- //
 //        PRIVATE FUNCTIONS         //
@@ -28,7 +28,8 @@ void LU::decompose(Matrix &A, Matrix &L, Matrix &U)
                 {
                     sum += ( L(kk, jj) * U(jj, ii) );
                 }
-                L(kk, ii) = ( A(kk, ii) - sum ) / U(ii, ii);
+
+                L(kk, ii) = U(ii, ii) > MIN_TOL ? ( A(kk, ii) - sum ) / U(ii, ii) : 0;
             }
         }
     }
@@ -59,7 +60,7 @@ Matrix LU::solve(Matrix &A, Matrix &b)
     {
         for (int ii = kk+1; ii < m; ii++)
         {
-            multiplier = L(ii, kk) / L(kk, kk);
+            multiplier = L(kk, kk) > MIN_TOL ? L(ii, kk) / L(kk, kk) : 0;
             b(ii, 0) = b(ii, 0) - multiplier * b(kk, 0);
             for (int jj = kk+1; jj < m; jj++)
             {
@@ -68,14 +69,14 @@ Matrix LU::solve(Matrix &A, Matrix &b)
         }
     }
 
-    x(-1, 0) = b(-1, 0) / U(-1, -1);
+    x(-1, 0) = U(-1, -1) > MIN_TOL ? b(-1, 0) / U(-1, -1) : 0;
     for (int ii = m-2; ii > -1; ii--)
     {
         for (int jj = ii+1; jj < m; jj++)
         {
             x(ii, 0) += U(ii, jj) * x(jj, 0);
         }
-        x(ii, 0) = ( b(ii, 0) - x(ii, 0) ) / U(ii, ii);
+        x(ii, 0) = U(ii, ii) > MIN_TOL ? ( b(ii, 0) - x(ii, 0) ) / U(ii, ii) : 0;
     }
 
     return x;

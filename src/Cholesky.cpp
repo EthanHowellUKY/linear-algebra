@@ -1,5 +1,5 @@
 
-#include "Matrix/Cholesky.h"
+#include "LinearAlgebra/Cholesky.h"
 
 // -------------------------------- //
 //        PRIVATE FUNCTIONS         //

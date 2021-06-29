@@ -1,21 +1,20 @@
 
-#ifndef GAUSSSEIDEL_H
-#define GAUSSSEIDEL_H
+#ifndef JACOBI_H
+#define JACOBI_H
 
 #include <iostream>
-#include "Matrix/Solver.h"
+#include "LinearAlgebra/Solver.h"
 
-class GaussSeidel : public Solver
+class Jacobi : public Solver
 {
 public:
-    GaussSeidel();
-    ~GaussSeidel();
+    Jacobi();
+    ~Jacobi();
     Matrix solve(Matrix &A, Matrix &b) override;
     Matrix solve(Matrix &A, std::vector<double> &b) override;
     void print() override;
 
 private:
-    
 };
 
-#endif // GAUSSSEIDEL_H
+#endif // JACOBI_H

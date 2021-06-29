@@ -1,5 +1,5 @@
 
-#include "Matrix/SOR.h"
+#include "LinearAlgebra/SOR.h"
 
 SOR::SOR() {}
 SOR::~SOR() {}

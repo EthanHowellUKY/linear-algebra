@@ -1,5 +1,5 @@
 
-project(MatrixModels)
+project(LinearAlgebra)
 
 if (WIN32)
     set(VCPKG_DIR "C:/vcpkg/installed/x64-windows")
@@ -24,7 +24,7 @@ add_library(
     ${SRC_FILES}
     ${HEADER_FILES}
     )
-add_library(echo::matrixmodels ALIAS ${PROJECT_NAME})
+add_library(echo::linearalgebra ALIAS ${PROJECT_NAME})
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include

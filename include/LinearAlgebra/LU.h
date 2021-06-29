@@ -3,7 +3,7 @@
 #define LU_H
 
 #include <iostream>
-#include "Matrix/Solver.h"
+#include "LinearAlgebra/Solver.h"
 
 class LU : public Solver
 {

@@ -2,7 +2,7 @@
 #ifndef CHOLESKY_H
 #define CHOLESKY_H
 
-#include "Matrix/Solver.h"
+#include "LinearAlgebra/Solver.h"
 
 class Cholesky : public Solver
 {

@@ -2,11 +2,11 @@
 #ifndef SOLVERFACTORY_H
 #define SOLVERFACTORY_H
 
-#include "Matrix/LU.h"
-#include "Matrix/Jacobi.h"
-#include "Matrix/GaussSeidel.h"
-#include "Matrix/SOR.h"
-#include "Matrix/Cholesky.h"
+#include "LinearAlgebra/LU.h"
+#include "LinearAlgebra/Jacobi.h"
+#include "LinearAlgebra/GaussSeidel.h"
+#include "LinearAlgebra/SOR.h"
+#include "LinearAlgebra/Cholesky.h"
 
 enum SOLVER
 {

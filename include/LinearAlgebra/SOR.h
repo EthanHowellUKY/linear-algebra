@@ -3,7 +3,7 @@
 #define SOR_H
 
 #include <iostream>
-#include "Matrix/Solver.h"
+#include "LinearAlgebra/Solver.h"
 
 class SOR : public Solver
 {

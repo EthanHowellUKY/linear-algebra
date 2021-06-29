@@ -1,10 +1,10 @@
 
-#include "Matrix/Matrix.h"
+#include "LinearAlgebra/Matrix.h"
 
 // -------------------------------- //
 //        PRIVATE FUNCTIONS         //
 // -------------------------------- //
-void Matrix::add_sub(Matrix &mat, Matrix &lhs, Matrix &rhs, const int &op)
+void Matrix::add_sub(Matrix &mat, Matrix &lhs, const Matrix &rhs, const int &op)
 {
     for (int ii = 0; ii < lhs.rows(); ii++)
     {
@@ -58,29 +58,29 @@ Matrix::Matrix(int rows, int cols)
 {
     m_rows = rows;
     m_cols = cols;
-    m_matrix.resize(m_rows);
-    for (int ii = 0; ii < rows; ii++)
-    {
-        m_matrix[ii].resize(m_cols, 0);
-    }
+    m_matrix.resize(m_rows, std::vector<double>(cols, 0.0));
+    // for (int ii = 0; ii < rows; ii++)
+    // {
+    //     m_matrix[ii].resize(m_cols, 0);
+    // }
 }
 
 Matrix::Matrix(const std::vector<double> &mat)
 {
     m_rows = mat.size();
     m_cols = 1;
-    m_matrix.resize(m_rows);
+    m_matrix.resize(m_rows, std::vector<double>(m_cols));
     for (int ii=0; ii<m_rows; ii++)
     {
-        m_matrix[ii].push_back(mat[ii]);
+        m_matrix[ii][0] = mat[ii];
     }
 }
 
 Matrix::Matrix(const std::vector<std::vector<double>> &mat)
+    : m_matrix{mat}
 {
     m_rows = mat.size();
     m_cols = mat[0].size();
-    m_matrix = mat;
 }
 
 // -------------------------------- //
@@ -91,7 +91,7 @@ Matrix::~Matrix() {  }
 // -------------------------------- //
 //            OPERATORS             //
 // -------------------------------- //
-Matrix Matrix::operator+(Matrix &rhs)
+Matrix Matrix::operator+(const Matrix &rhs)
 {
     Matrix sum(m_rows, m_cols);
     if (rhs.rows() != m_rows || rhs.cols() != m_cols)
@@ -104,7 +104,7 @@ Matrix Matrix::operator+(Matrix &rhs)
     return sum;
 }
 
-Matrix Matrix::operator-(Matrix &rhs)
+Matrix Matrix::operator-(const Matrix &rhs)
 {
     Matrix sum(m_rows, m_cols);
     if (rhs.rows() != m_rows || rhs.cols() != m_cols)
@@ -117,24 +117,45 @@ Matrix Matrix::operator-(Matrix &rhs)
     return sum;
 }
 
-Matrix Matrix::operator*(Matrix &rhs)
-{
-    Matrix result(m_rows, rhs.cols());
-    if (m_cols == rhs.rows())
+Matrix Matrix::operator*(const Matrix & rhs){
+    Matrix multip(m_rows, rhs.cols());
+    if(m_cols == rhs.rows())
     {
-        for (int ii = 0; ii < m_rows; ii++)
+        unsigned i,j,k;
+        double temp = 0.0;
+        for (i = 0; i < m_rows; i++)
         {
-            for (int jj = 0; jj < m_cols; jj++)
+            for (j = 0; j < rhs.cols(); j++)
             {
-                for (int kk = 0; kk < rhs.rows(); kk++)
+                temp = 0.0;
+                for (k = 0; k < m_cols; k++)
                 {
-                    result(ii, jj) += (*this)(ii, kk) * rhs(kk, jj);
+                    temp += m_matrix[i][k] * rhs(k,j);
                 }
+                multip(i,j) = temp;
+                //cout << multip(i,j) << " ";
             }
+            //cout << endl;
+        }
+        return multip;
+    }
+    else
+    {
+        return multip;
+    }
+}
+
+Matrix Matrix::operator+=(const Matrix &rhs)
+{
+    for (int ii = 0; ii < rhs.rows(); ii++)
+    {
+        for (int jj = 0; jj < rhs.cols(); jj++)
+        {
+            (*this)(ii, jj) += rhs(ii, jj);
         }
     }
 
-    return result;
+    return *this;
 }
 
 std::vector<double> Matrix::operator*(std::vector<double> &rhs)
@@ -234,6 +255,7 @@ void Matrix::print()
         }
         std::cout << "]" << '\n';
     }
+    std::cout << '\n';
 }
 double Matrix::trace()
 {
@@ -332,4 +354,23 @@ Matrix operator*(Matrix lhs, Matrix rhs)
     }
 
     return result;
+}
+
+Matrix operator-(const Matrix &lhs, const Matrix &rhs)
+{
+    Matrix sum(lhs.rows(), lhs.cols());
+    if (rhs.rows() != lhs.rows() || rhs.cols() != lhs.cols())
+    {
+        std::cout << "Dimension mismatch in subtraction" << '\n';
+        return sum;
+    }
+
+    for (int ii = 0; ii < lhs.rows(); ii++)
+    {
+        for (int jj = 0; jj < lhs.cols(); jj++)
+        {
+            sum(ii, jj) = lhs(ii, jj) -1 * rhs(ii, jj);
+        }
+    }
+    return sum;
 }

@@ -1,5 +1,5 @@
 
-#include "Matrix/Jacobi.h"
+#include "LinearAlgebra/Jacobi.h"
 
 Jacobi::Jacobi() {}
 Jacobi::~Jacobi() {}
