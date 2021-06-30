@@ -97,7 +97,7 @@ Currently, only solutions via LU Decomposition are supported. However, developme
 
 # Example
 
-The following example shows how the module can be used to build a simple graph and generate a path between two nodes. Because the Nodes are connected to one another as linked lists, each node needs to be initialized as a pointer.
+The following example shows how the module can be used to solve a 3x3 linear system using the LU Decomposition method.
 
 ```cpp
 #include <iostream>
@@ -107,20 +107,17 @@ The following example shows how the module can be used to build a simple graph a
 int main(int argc, char *argv[])
 {
     Solver *solver = SolverFactory::create(SOLVER::LUDECOMP);
+    Matrix A = Matrix({ {2,  -1, -2},
+                        {-4,  6,  3},
+                        {-4, -2,  8}});
 
-	Matrix A = Matrix({{2,  -1, -2},
-					   {-4,  6,  3},
-					   {-4, -2,  8}});
-
-	Matrix b = Matrix({-1, 5, 2});
-
-	Matrix x = solver->solve(A, b);
-
-	x.print();
-	/*
-		[ 1 ]
-		[ 1 ]
-		[ 1 ]
+    Matrix b = Matrix({-1, 5, 2});
+    Matrix x = solver->solve(A, b);
+    x.print();
+    /*
+        [ 1 ]
+        [ 1 ]
+        [ 1 ]
 	*/
 
     return 0;
