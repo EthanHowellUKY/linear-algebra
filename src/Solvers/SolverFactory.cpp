@@ -1,5 +1,5 @@
 
-#include "LinearAlgebra/SolverFactory.h"
+#include "Solvers/SolverFactory.h"
 
 Solver *SolverFactory::create(const SOLVER &solver)
 {

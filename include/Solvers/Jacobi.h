@@ -3,7 +3,7 @@
 #define JACOBI_H
 
 #include <iostream>
-#include "LinearAlgebra/Solver.h"
+#include "Solvers/Solver.h"
 
 class Jacobi : public Solver
 {

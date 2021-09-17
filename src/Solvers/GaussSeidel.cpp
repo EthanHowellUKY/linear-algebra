@@ -1,5 +1,5 @@
 
-#include "LinearAlgebra/GaussSeidel.h"
+#include "Solvers/GaussSeidel.h"
 
 GaussSeidel::GaussSeidel() {}
 GaussSeidel::~GaussSeidel() {}

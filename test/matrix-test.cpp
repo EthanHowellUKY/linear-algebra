@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "LinearAlgebra/Matrix.h"
+#include "Matrix.h"
 
 // CASE VARIABLES
 Matrix m1 = Matrix({{1, 0, 0},

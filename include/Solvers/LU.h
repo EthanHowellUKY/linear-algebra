@@ -1,20 +1,19 @@
 
-#ifndef SOR_H
-#define SOR_H
+#ifndef LU_H
+#define LU_H
 
 #include <iostream>
-#include "LinearAlgebra/Solver.h"
+#include "Solvers/Solver.h"
 
-class SOR : public Solver
+class LU : public Solver
 {
 public:
-    SOR();
-    ~SOR();
     Matrix solve(Matrix &A, Matrix &b) override;
     Matrix solve(Matrix &A, std::vector<double> &b) override;
     void print() override;
 
 private:
+    void decompose(Matrix &A, Matrix &L, Matrix &U);
 };
 
-#endif // SOR_H
+#endif // LU_H

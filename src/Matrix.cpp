@@ -1,5 +1,5 @@
 
-#include "LinearAlgebra/Matrix.h"
+#include "Matrix.h"
 
 // -------------------------------- //
 //        PRIVATE FUNCTIONS         //

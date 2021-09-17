@@ -1,5 +1,5 @@
 
-#include "LinearAlgebra/LU.h"
+#include "Solvers/LU.h"
 
 // -------------------------------- //
 //        PRIVATE FUNCTIONS         //

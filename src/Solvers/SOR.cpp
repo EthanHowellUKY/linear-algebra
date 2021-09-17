@@ -1,5 +1,5 @@
 
-#include "LinearAlgebra/SOR.h"
+#include "Solvers/SOR.h"
 
 SOR::SOR() {}
 SOR::~SOR() {}
